@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
+import './style.css';
 import { Navbar } from './layouts/Navbar';
 import { Redirect, Route } from 'react-router-dom';
 import { Footer } from './layouts/Footer';
 import { HomePage } from './layouts/home-page/HomePage';
 import { SignUp } from './layouts/home-page/SignUp';
-import { SignIn } from './layouts/home-page/components/SignIn';
 import { AboutUs } from './layouts/home-page/AboutUs';
 import { ContactUs } from './layouts/home-page/ContactUs';
+import { SignIn } from './layouts/home-page/SignIn';
 
 export const App = () => {
   return (

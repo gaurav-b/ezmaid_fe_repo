@@ -1,33 +1,36 @@
+// import axios from 'axios';
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { parseJwt } from "../../misc/Helpers";
+import { parseJwt } from "../misc/Helpers";
 
 export const SignIn = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSignIn = async () => {
+    const handleSignIn = async (e: any) => { // as we were using the below line and was not using the e as in event, so fetch was not waiting for the Promise to complete
+    // const handleSignIn = async () => {
+        
+        e.preventDefault();
 
         const location = window.location.hostname;
-
-        const data = {
-            "username": username,
-            "password": password
-        }
 
         const config = {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
-        }
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            })
+        };
 
         const baseUrl: string = `http://${location}:8081/auth/authenticate`;
 
         const response = await fetch(baseUrl, config);
+
+        const responseJson = await response.json();
 
         if (!response.ok) {
             throw new Error('Something went wrong!');
@@ -35,15 +38,11 @@ export const SignIn = () => {
             console.log('ok');
         }
 
-        const responseJson = await response.json();
-        // const { accessToken } = responseJson.accessToken;
-
-        // console.log(accessToken);
-        // const parsedJwt = parseJwt(accessToken);
-        // const user = { parsedJwt, accessToken };
-        // localStorage.setItem('user', JSON.stringify(user));
-        // console.log(user);
-    }
+        const accessToken = responseJson.accessToken
+        const parsedJwt = parseJwt(accessToken);
+        const user = { parsedJwt, accessToken };
+        localStorage.setItem('user', JSON.stringify(user));
+    };
 
     return (
         <div className="container">
